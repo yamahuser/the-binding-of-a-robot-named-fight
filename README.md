@@ -2,6 +2,16 @@
 
 **An unofficial overhaul mod for [A Robot Named Fight](https://store.steampowered.com/app/603530/A_Robot_Named_Fight/), with a lot of inspiration from The Binding of Isaac.**
 
+> [!WARNING]
+> **Disclaimer: this mod kind of sucks right now.** It's an early work in progress, and it's honestly rough. Expect:
+> - **Bugs.** Most of the new features compile and boot, but they've barely been played.
+> - **Bad balance.** The characters, synergy costs and weapon scaling are first guesses.
+> - **Missing or broken visual effects.** Several energy weapons don't show their effects properly yet (the flamethrower aura, for example).
+> - **Placeholder art and a debug-looking character select screen.**
+> - **Save risk.** Starting a run with the mod can change your save. Back up your save folder before you play.
+>
+> It's provided as is, with no warranty. Use it at your own risk. Bug reports and ideas are welcome in [Issues](../../issues).
+
 The mod adds playable characters, each with a real strength and a real flaw, and makes items stack the way Isaac's do: every energy weapon now scales with your stats and picks up your shot upgrades.
 
 > **This is a mod, not the official game.** A Robot Named Fight © 2017 Morningstar Game Studio Incorporated (Matt Bitner). This project is built on the publicly released Unity source and the community [OpenARNF](https://github.com/OpenARNF/OpenARNF) fork, and follows the [A Robot Named Fight license](License.md): non-commercial only, the copyright notice kept, and marked clearly as a mod. If you enjoy it, [buy the real game](https://store.steampowered.com/app/603530/A_Robot_Named_Fight/).
