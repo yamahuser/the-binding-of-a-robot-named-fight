@@ -25,6 +25,11 @@ public class PhaserangBoomerang : MonoBehaviour, IHasTeam
     private bool _returning;
 
     public Action onReturn;
+    // [MODCONTENT] synergy hooks
+    public bool refundOnReturn = true;
+    public List<StatusEffect> statusEffects;
+    public Action<IDamageable> onHit;
+    public float homing;
 
     private void Awake()
     {
@@ -49,6 +54,16 @@ public class PhaserangBoomerang : MonoBehaviour, IHasTeam
             }
             else
             {
+                // [MODCONTENT] homing mods bend the outbound arc toward the nearest enemy
+                if (homing > 0 && EnemyManager.instance)
+                {
+                    var e = EnemyManager.instance.GetClosest(transform.position, 6f);
+                    if (e)
+                    {
+                        var to = (e.position - transform.position); to.z = 0;
+                        _direction = Vector3.RotateTowards(_direction, to.normalized, homing * 0.5f * Time.deltaTime, 0).normalized;
+                    }
+                }
                 transform.position += _direction * _velocity * Time.deltaTime;
                 _velocity -= Time.deltaTime * _acceleration;
                 if (_velocity < 0)
@@ -62,6 +77,7 @@ public class PhaserangBoomerang : MonoBehaviour, IHasTeam
 
     public void Shoot(Team team, Transform origin, AimingInfo aimingInfo, float velocityFactor)
     {
+        if (_collider2D == null) { _collider2D = GetComponentInChildren<Collider2D>(); }
         alive = true;
         transform.parent = null;
         _origin = origin;
@@ -121,7 +137,12 @@ public class PhaserangBoomerang : MonoBehaviour, IHasTeam
         {
             var rDamage = damagePerSecond * Time.deltaTime;
             if (_team == Team.Player && PlayerManager.instance) { rDamage *= PlayerManager.instance.coOpMod; }
-            damageable.Hurt(rDamage, gameObject, damageType, true);
+            if (damageable.Hurt(rDamage, gameObject, damageType, true))
+            {
+                // [MODCONTENT]
+                if (statusEffects != null && statusEffects.Count > 0) { damageable.ApplyStatusEffects(statusEffects, _team); }
+                if (onHit != null) { onHit(damageable); }
+            }
         }
     }
 }

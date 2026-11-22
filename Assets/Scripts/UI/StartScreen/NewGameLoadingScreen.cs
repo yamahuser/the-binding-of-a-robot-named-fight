@@ -184,6 +184,8 @@ public class NewGameLoadingScreen : MonoBehaviour
             activeGame.itemsPossessed.Add(activeGame.layout.startingFollower);
         }
 
+        CharacterRoster.GrantStartingKit(activeGame); // [MODCONTENT]
+
         var seededModes = new GameMode[] { GameMode.Normal, GameMode.BossRush, GameMode.Exterminator, GameMode.MegaMap };
         if(seededModes.Contains(activeGame.gameMode) && !string.IsNullOrEmpty(activeGame.layout.password))
         {

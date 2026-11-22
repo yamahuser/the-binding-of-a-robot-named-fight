@@ -717,6 +717,14 @@ public partial class Player : Damageable, IPausable, IHasTeam, IHasVelocity, IRe
         health = Mathf.Clamp(health, 0, maxHealth);
         energy = Mathf.Clamp(energy, 0, maxEnergy);
 
+        // [MODCONTENT] Wraith: health is a fixed hit budget per room
+        var hitsPerRoom = CharacterRoster.Current.hitsPerRoom;
+        if (hitsPerRoom > 0)
+        {
+            maxHealth = hitsPerRoom;
+            health = Mathf.Clamp(health, 0, maxHealth);
+        }
+
         if (fireCallback && onSetStats != null)
         {
             onSetStats();
@@ -1344,7 +1352,9 @@ public partial class Player : Damageable, IPausable, IHasTeam, IHasVelocity, IRe
 
                 if (_selectedEnergyWeapon == null)
                 {
-                    BasicAttack();
+                    // [MODCONTENT] Volt has no bolt: attacking selects his default weapon instead
+                    if (CharacterRoster.Current.noBolt) { CharacterRoster.SelectDefaultWeapon(this); }
+                    else { BasicAttack(); }
                 }
                 else
                 {
@@ -1455,7 +1465,7 @@ public partial class Player : Damageable, IPausable, IHasTeam, IHasVelocity, IRe
             _unGroundedFrames++;
         }
 
-        if (energy < maxEnergy)
+        if (energy < maxEnergy && !CharacterRoster.NoEnergyRegen) // [MODCONTENT] Hunter: energy only from pickups
         {
             _energyRegenCounter += Time.deltaTime;
             var time = (_energyRegenTime + energy + Mathf.Clamp(energy-2, 0, 99)) * _energyRegenTimeMod;
@@ -1581,7 +1591,11 @@ public partial class Player : Damageable, IPausable, IHasTeam, IHasVelocity, IRe
                 }
             }
 
-            if (_selectedEnergyWeapon != null) { _selectedEnergyWeapon.Update(); }
+            if (_selectedEnergyWeapon != null)
+            {
+                WeaponSynergy.RefreshLiveStats(this); // [MODCONTENT] keep Health/Scrap Booster bonuses live
+                _selectedEnergyWeapon.Update();
+            }
         }
     }
 
@@ -2471,8 +2485,21 @@ public partial class Player : Damageable, IPausable, IHasTeam, IHasVelocity, IRe
         return HurtKnocback(damage, source, damageType, ignoreAegis, true);
     }
 
+    private float _lastHitBudgetTime = -10f; // [MODCONTENT]
+
     public override void HandleDamage(float damageAmount)
     {
+        // [MODCONTENT] Wraith: every hit costs exactly one, with a short grace so
+        // continuous hazards don't drain all three at once.
+        if (CharacterRoster.Current.hitsPerRoom > 0 && !artificeMode)
+        {
+            if (Time.time - _lastHitBudgetTime < 0.6f) { return; }
+            _lastHitBudgetTime = Time.time;
+            base.HandleDamage(1f);
+            return;
+        }
+
+        damageAmount *= CharacterRoster.DamageTakenMultiplier; // [MODCONTENT] Bulwark / Wraith
         if(artificeMode)
         {
             int scrapDamage = (int)Mathf.Clamp(damageAmount, 0, 3);
@@ -2509,7 +2536,7 @@ public partial class Player : Damageable, IPausable, IHasTeam, IHasVelocity, IRe
                 return;
             }
 
-            health += amount;
+            health += amount * CharacterRoster.HealingMultiplier; // [MODCONTENT] Bulwark heals half
             if (health > maxHealth) { health = maxHealth; }
         }
     }
@@ -2744,6 +2771,15 @@ public partial class Player : Damageable, IPausable, IHasTeam, IHasVelocity, IRe
             else if(_rotaryShotCount == 2) { dirMod = -1; }
             var perpDir = (Vector3)Vector2.Perpendicular(direction);
             origin += perpDir * (0.125f) * dirMod;
+        }
+
+        // [MODCONTENT] Swarmlord can't shoot from his body: everything fires from the Brood
+        var brood = SwarmBrood.For(this);
+        if (brood)
+        {
+            origin = brood.Muzzle(direction);
+            origin.z = shootPoint.position.z;
+            nearWall = false;
         }
 
         var info = new AimingInfo(origin, direction) { nearWall = nearWall, };

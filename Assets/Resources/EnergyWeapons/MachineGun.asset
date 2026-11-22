@@ -84,7 +84,7 @@ MonoBehaviour:
   baseDamage: 1.25
   useDamageMultiplier: 1
   useShotSpeedMultiplier: 1
-  useRateOfFire: 0
+  useRateOfFire: 1
   useHoming: 1
   useSize: 1
   energyCost: 0.05

@@ -705,6 +705,16 @@ public partial class LayoutGenerator
                 if (seg.specificItems != null) { availableNonTraversalItems.RemoveAll((i) => seg.specificItems.Contains(i.type)); }
             }
 
+            // [MODCONTENT] the character's own starting kit is never placed in rooms
+            if (SaveGameManager.activeGame != null)
+            {
+                foreach (var kitItem in CharacterRoster.NonTraversalStartingItems(SaveGameManager.activeGame.character))
+                {
+                    if (!_layout.allNonTraversalItemsAdded.Contains(kitItem)) { _layout.allNonTraversalItemsAdded.Add(kitItem); }
+                    availableStartingItems.RemoveAll(i => i.type == kitItem);
+                }
+            }
+
             if (_layout.gameMode != GameMode.MegaMap)
             {
                 var startingItemsRandom = new MicrosoftRandom(seed - populateAttempts);

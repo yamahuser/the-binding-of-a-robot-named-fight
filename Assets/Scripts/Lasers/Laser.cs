@@ -31,6 +31,7 @@ public class Laser : MonoBehaviour, IHasTeam, ILaser
 
     public DamageType damageType;
     public List<StatusEffect> statusEffects;
+    public System.Action<IDamageable> onHit; // [MODCONTENT]
 
     public Team setTeam = Team.None;
 
@@ -86,6 +87,7 @@ public class Laser : MonoBehaviour, IHasTeam, ILaser
             damageTrigger.damage = damage;
             damageTrigger.damageType = damageType;
             damageTrigger.statusEffects = statusEffects;
+            damageTrigger.onDamageParam = onHit; // [MODCONTENT]
             damageTrigger.ignoreDoors = ignoreDoors;
             damageTrigger.ignoreAegis = team != Team.Enemy;
             damageTrigger.perSecond = team != Team.Enemy;
@@ -281,6 +283,7 @@ public class Laser : MonoBehaviour, IHasTeam, ILaser
         damageType = stats.damageType;
 
         statusEffects = stats.statusEffects;
+        onHit = stats.onHit; // [MODCONTENT]
         layerMask = stats.layerMask;
         SetSortingOrder(stats.sortingLayerName, stats.sortingOrder);
         fadeOut = stats.stopType == LaserStopType.Fade;

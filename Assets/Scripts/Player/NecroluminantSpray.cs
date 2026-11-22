@@ -28,14 +28,15 @@ public class NecroluminantSpray : PlayerEnergyWeapon
     {
         if (_player.state != DamageableState.Alive) return;
 
-        if (_player.energy >= energyCost)
+        var cost = WeaponSynergy.EnergyCost(_player, energyCost); // [MODCONTENT] synergy load
+        if (_player.energy >= cost)
         {
             if (_player.healthBooster) { _player.CalculateAttackDelay(false); }
             _player.CalculateShotSpeed(false);
             _player.CalculateShotSize(false);
             _player.CalculateDamage(false);
 
-            _player.energy -= energyCost;
+            _player.energy -= cost;
 
             var stats = new ProjectileStats(projectileStats);
 
@@ -48,6 +49,9 @@ public class NecroluminantSpray : PlayerEnergyWeapon
             stats.homingRadius = _player.projectileStats.homingRadius;
             stats.creepStats = new CreepStats(projectileStats.creepStats);
             stats.creepStats.damage = stats.creepStats.damage * _player.damageMultiplier;
+            // [MODCONTENT] spray takes status/element/pierce/bounce/phase/homing; creep pools grow with shot size.
+            WeaponSynergy.ApplyShotMods(stats, _player, WeaponSynergy.Mods.All & ~WeaponSynergy.Mods.Fragment & ~WeaponSynergy.Mods.Explosive);
+            stats.creepStats.lightRadius *= Mathf.Clamp(WeaponSynergy.Size(_player), 1f, 2f);
 
             var modifiedAttackDelay = attackDelay * (_player.attackDelay / Constants.startingAttackDelay);
             _player.StartCoroutine(_player.DummyAttack(modifiedAttackDelay));

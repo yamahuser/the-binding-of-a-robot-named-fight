@@ -1,62 +1,75 @@
-# A Robot Named Fight videogame public source code
+# The Binding of a Robot Named Fight
 
-## Android build download
+**An unofficial overhaul mod for [A Robot Named Fight](https://store.steampowered.com/app/603530/A_Robot_Named_Fight/), with a lot of inspiration from The Binding of Isaac.**
 
-Get the latest APK in [releases](https://github.com/OpenARNF/OpenARNF/releases), **controller is required**, controller buttons [are hardcoded](https://github.com/OpenARNF/OpenARNF/blob/master/Assets/PsuedoMiddleware/Rewired/Rewired.cs#L87).
+The mod adds playable characters, each with a real strength and a real flaw, and makes items stack the way Isaac's do: every energy weapon now scales with your stats and picks up your shot upgrades.
 
-Desktop version is currently completely inferior to the official one, get it [on Steam](https://store.steampowered.com/app/603530/A_Robot_Named_Fight/) instead, it has no DRM and is not expensive.
+> **This is a mod, not the official game.** A Robot Named Fight © 2017 Morningstar Game Studio Incorporated (Matt Bitner). This project is built on the publicly released Unity source and the community [OpenARNF](https://github.com/OpenARNF/OpenARNF) fork, and follows the [A Robot Named Fight license](License.md): non-commercial only, the copyright notice kept, and marked clearly as a mod. If you enjoy it, [buy the real game](https://store.steampowered.com/app/603530/A_Robot_Named_Fight/).
+>
+> *The Binding of Isaac* is by Edmund McMillen and Nicalis. This project is not affiliated with or endorsed by them, Morningstar Game Studio, or Nintendo.
 
-## Changes applied to original sources
- 
- - Unity version is updated to `2022.3.36f1` (latest LTS)
+## Features
 
- - Controller support is implemented using InputSystem
+### Character select
+**New Game** opens a character select before the run is created. Every robot has a strength and a strong flaw, so none of them is simply better than Fight.
 
- - The fix is added to make destroyable blocks to be actually destoyable
+| Robot | Strength | Flaw |
+|---|---|---|
+| **Fight** | The original. No weaknesses. | No strengths. |
+| **Volt** | Laser Beam is his default attack. +8 energy, very fast recharge, electric damage, synergy surcharge halved. | No normal bolt at all. The beam is short (it reaches further as shot size grows), and when energy runs dry he can't attack. |
+| **Wraith** | ×1.35 damage, much faster movement, piercing bolts, Cloaking Device. | No health bar, only **3 hits per room**. Any hit costs one, and they refill on entering a new room. Healing does nothing. |
+| **Swarmlord** | A Lilith-style summoner. His **Brood** familiar fires every shot (bolts, charge shots, every energy weapon) with all his upgrades, and all his orbs scale with his stats. | He can't shoot from his body. The Brood trails behind him, and its shots get blocked when it drifts into walls. |
+| **Scrapper** | Scrap is power. His bolt grows with every scrap he carries, colored scrap powers his stats, kills often drop scrap, and he has a long pickup range. | Scrap is also his health. Every hit knocks scrap out of him, which also shrinks his bolt, and every shop purchase spends his life. |
+| **Hunter** | Fast shots, faster movement, Rocket Launcher from the start. | Energy never recharges on its own. It only comes from pickups. |
 
- - Android branch is added, the build is tested with DualShock and X-Box One controllers
+### Energy weapon synergies
+All 14 energy weapons now work with the rest of your build:
 
- - Product name and company name are changed to OpenARNF
+- **Stats:** damage, fire rate, shot speed and shot size affect every weapon. Held weapons (beams, flamethrower, lightning, boomerang) gain damage per second from fire rate, and their range and size grow with shot speed and shot size.
+- **Shot upgrades:** status effects (burn, poison, slow), elements, pierce, bounce, phasing, homing, growth, Explosive and Fragment carry over to every weapon. Weapons that don't fire bullets turn Explosive and Fragment into on-hit blasts and shards.
+- **Each weapon uses multishot its own way:** Rail Gun fires a fan of rails, Flamethrower adds extra flame streams, Lightning Gun forks to nearby enemies, Phaserang throws a fan of boomerangs, and so on.
+- **Item hooks:** Big Bolt makes energy weapons huge without slowing their fire rate. Bolt Helm shots take on the equipped weapon's element. Health Booster and Scrap Booster bonuses stay live while you fire.
+- **Synergy cost:** each synergy multiplies the weapon's energy cost by its strength: Multishot ×2, Explosive ×1.5, Fragment ×1.4, Pierce ×1.3, and so on, down to ×1.15. Stat upgrades are free.
 
-## How to build
+### Testing tools
+These are available in the Unity editor and in development builds:
 
- - Download [Unity Hub application](https://docs.unity3d.com/hub/manual/InstallHub.html)
- - Install editor version `2022.3.36f1` including there additional packages for Linux/Mac/Windows as needed
- - Open this repo in editor, choose "File->Build Settings->Build" (ignoring the warning about lack of access to Unity services)
+| Key | Action |
+|---|---|
+| F7 | Warp into a large empty test arena (press again to go back) |
+| F10 | Open the spawn menu: put any item on a pedestal or equip it directly, spawn DPS dummies, switch characters, clear your inventory |
+| F12 | Spawn a DPS dummy that shows rolling DPS, peak DPS, total damage and biggest hit |
+| F9 / F11 | Give mod items / refill energy |
 
-# Original README from the ARNF Creator
+## Building
 
-A Robot Named Fight first launched on Steam on September 7th, 2017. Since then we've built a large, wonderful fan-base, released multiple free updates, and more than doubled the amount of content featured in the game. It's been an amazing 5 years of A Robot Named Fight.
+1. Install Unity **2022.3.36f1**. Unity Hub works.
+2. Clone this repository and open it as a Unity project.
+3. To play in the editor, press Play. The game always boots from the first scene.
+4. To build, use **File → Build Settings → Build**. Then start a **New Game** to reach the character select.
 
-As of September 30th, 2022, I'm releasing the unity project files for A Robot Named Fight to the public. The game and the source code are being provided for aspiring game developers and hobbyist to explore, learn from, and innovate upon.
+A controller or keyboard works for the menus.
 
-I can't wait to see what y'all create!
+### Optional: the Samus sprite
+Hunter is designed to use a Samus sprite, but this repository **does not include Nintendo's artwork**. Without it, Hunter uses Fight's sprite. If you own a sheet, `Tools/samus-importer/` converts it into `Assets/Resources/Samus/`. See that folder's README.
 
-## Details
-This version of A Robot Named Fight was built using Unity 2019.4.0f1
+## Project layout (mod code)
+| Path | What it is |
+|---|---|
+| `Assets/Scripts/ModContent/` | Characters, the character select, Swarmlord's Brood and minion links, the DPS dummy, pedestals and the test arena |
+| `Assets/Scripts/Player/WeaponSynergy.cs` | Shared synergy layer for energy weapons |
+| `Assets/ModContentTestKeys.cs` | Test bench hotkeys and the spawn menu |
+| `Tools/` | Asset and art generators and a save cleanup script |
 
-It contains stripped-down, partial code from two middleware Unity assets. This code has been included with permission from the creators. For full functionality you'll have to either replace these assets with something of your own creation or purchase them from the links below.
-- [Rewired by Guavaman](https://assetstore.unity.com/packages/tools/utilities/rewired-21676)
-- [Super Tilemap Editor by Creative Spore](https://assetstore.unity.com/packages/tools/level-design/super-tilemap-editor-56339)
+Changes to the game's own scripts are tagged with `[MODCONTENT]` comments, so `grep -r MODCONTENT Assets` finds every hook.
 
-## Support
-If you'd like to support me (Matt Bitner) and Morningstar Game Studio please purchase any of our games from the links below:
-- [A Robot Named Fight (Switch)](https://www.nintendo.com/store/products/a-robot-named-fight-switch/)
-- [A Robot Named Fight (Steam)](https://store.steampowered.com/app/603530/A_Robot_Named_Fight/)
-- [C.A.R.L. (Switch)](https://www.nintendo.com/store/products/c-a-r-l-switch/)
-- [C.A.R.L. (Steam)](https://store.steampowered.com/app/513910/CARL/)
-- [C.A.R.L. (PlayStation)](https://store.playstation.com/en-us/concept/10005618)
-- [C.A.R.L. (X Box)](https://www.xbox.com/en-us/games/store/carl/9pff14lsqtqt)
+## Credits
+- **A Robot Named Fight** by Matt Bitner / Morningstar Game Studio. The original game, its art and its source.
+- **[OpenARNF](https://github.com/OpenARNF/OpenARNF)** community fork: Unity 2022 upgrade, InputSystem controller support and fixes.
+- **The Binding of Isaac** by Edmund McMillen / Nicalis. Inspiration for the characters and item synergies.
+- Middleware included with the original source, used with the original author's permission: partial code from Rewired (Guavaman) and Super Tilemap Editor (Creative Spore).
 
-[Or donate to the A Robot Named Fight Patreon](https://www.patreon.com/arobotnamedfight)
+**AI disclosure:** this mod's code and its small pixel-art additions (pedestal, DPS dummy, arena tiles, Brood orb) were made with Anthropic's Claude (Claude Code), directed and playtested by the mod's author.
 
-## Legal
-
-Please read the full Licence.md before diving in. By downloading any file / copying any code from this repository you're agreeing to the text contained in Licence.md including the following caveats:
-
-(1) You may not alter or redistribute Covered Works in any manner that is primarily intended for or directed toward commercial advantage or private monetary compensation. This includes, but is not limited to, selling altered or unaltered versions of the game, the source code or including advertisements of any kind in altered or unaltered covered works.
-
-(2) You must display an appropriate copyright notice somewhere in the beginning of all Covered Works and in any documentation accompanying such Covered Works.
-
-(3) If you share a modified version of either the Game or its Source Code with others, you must not present it as an unmodified, or official, version of the Game or the Source code. Please make it apparent that it is a mod.
-
+## License
+The game source and assets follow the [A Robot Named Fight license](License.md): non-commercial use only, keep the copyright notice, and mark modified versions as mods. The original README is preserved in [README-OpenARNF.md](README-OpenARNF.md).

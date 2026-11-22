@@ -109,6 +109,9 @@ public class SaveGameData
 
     [JsonProperty(PropertyName = "gmd")]
     public GameMode gameMode;
+    // [MODCONTENT] chosen character id (null/missing = Fight)
+    [JsonProperty(PropertyName = "chr")]
+    public string character;
 
     //1.2.0.23
     [JsonProperty(PropertyName = "dscTel")]

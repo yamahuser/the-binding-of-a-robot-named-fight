@@ -19,7 +19,9 @@ public class MajorItemSpawnPoint : MonoBehaviour, IAbstractDependantObject
             return;
         }
 
-        Instantiate(Resources.Load<GameObject>("MajorItemPickUps/" + roomAbstract.majorItem.ToString()), transform.position, Quaternion.identity, transform.parent);
+        var pickup = Instantiate(Resources.Load<GameObject>("MajorItemPickUps/" + roomAbstract.majorItem.ToString()), transform.position, Quaternion.identity, transform.parent);
+        // [MODCONTENT] mod items stand on a pedestal in normal runs
+        if (ItemPedestal.IsModItem(roomAbstract.majorItem)) { ItemPedestal.PlaceUnder(pickup); }
         Destroy(gameObject);
     }
 }

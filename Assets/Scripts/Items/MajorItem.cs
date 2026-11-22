@@ -84,6 +84,8 @@
     HiveBolt = 219, //Shot Mod
     RotaryBolt = 220, //Shot Mod
 
+    //[MODCONTENT] 240-259 reserved for mod weapons/shot mods
+
     //Other (start at 300)
     WreckingShell = 300,
     SpeedShell = 301,
@@ -126,6 +128,7 @@
     TrollHelm = 338,
     WraithShell = 339,
     EmpireHelm = 340,
+    //[MODCONTENT] 360-399 reserved for mod stat items
 
     //Activated/Carried Items (start at 400)
     ETHChip = 400,

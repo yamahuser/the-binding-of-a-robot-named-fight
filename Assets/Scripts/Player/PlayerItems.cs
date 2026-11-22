@@ -15,6 +15,7 @@ public partial class Player
     private bool _scrapBooster;
     private bool _healthBooster;
     public bool healthBooster { get { return _healthBooster; } }
+    public bool scrapBooster { get { return _scrapBooster; } } // [MODCONTENT]
     private bool _energyBoots;
     private bool _empireHelm;
 
@@ -32,7 +33,8 @@ public partial class Player
         ExperimentalFeatures();
 #endif
 
-        if (itemsPossessed.Count > 0 || force)
+        var character = CharacterRoster.Current; // [MODCONTENT]
+        if (itemsPossessed.Count > 0 || force || !CharacterRoster.IsDefault(character))
         {
             ResetAbilities();
 
@@ -57,6 +59,24 @@ public partial class Player
                 }
 
                 itemInfos.Add(itemInfo);
+            }
+
+            // [MODCONTENT] the character's hidden trait goes through the same pipeline as items
+            if (character.Trait != null) { itemInfos.Add(character.Trait); }
+            if (!string.IsNullOrEmpty(character.palette))
+            {
+                var charPalette = Resources.Load<Texture2D>("Palettes/Player/PlayerPalette" + character.palette);
+                if (charPalette) { palettes.Add(charPalette); }
+            }
+            if (!itemInfos.Any(i => i.headSprite))
+            {
+                if (!string.IsNullOrEmpty(character.head)) { _playerSpriteMaker.Head = character.head; }
+                else if (CharacterRoster.IsCharacterHead(_playerSpriteMaker.Head)) { _playerSpriteMaker.Head = "Base"; }
+            }
+            if (!itemInfos.Any(i => i.shoulderPadSprite))
+            {
+                if (!string.IsNullOrEmpty(character.shoulderPad)) { _playerSpriteMaker.ShoulderPad = character.shoulderPad; }
+                else if (CharacterRoster.IsCharacterShoulderPad(_playerSpriteMaker.ShoulderPad)) { _playerSpriteMaker.ShoulderPad = "Base"; }
             }
 
             itemInfos = itemInfos.OrderBy((i) => i.decalOrder).ToList();

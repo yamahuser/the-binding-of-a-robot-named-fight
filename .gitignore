@@ -38,3 +38,7 @@ Production/DemoFootage.rar
 Production/Sounds.rar
 Assets/ML-Agents/Plugins/Computer/libtensorflow.bundle
 UnitySDK.log
+
+# Ripped Nintendo artwork is not redistributed. Generate it locally with Tools/samus-importer.
+/Assets/Resources/Samus/
+/Assets/Resources/Samus.meta

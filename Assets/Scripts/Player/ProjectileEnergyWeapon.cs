@@ -20,7 +20,7 @@ public class ProjectileEnergyWeapon : PlayerEnergyWeapon
     {
         if (_player.state != DamageableState.Alive) return;
 
-        var realEnergyCost = energyCost;
+        var realEnergyCost = WeaponSynergy.EnergyCost(_player, energyCost); // [MODCONTENT] synergy load
         if(_player.rotaryShot) { realEnergyCost /= 2; }
 
         if (_player.energy >= realEnergyCost)
@@ -50,7 +50,7 @@ public class ProjectileEnergyWeapon : PlayerEnergyWeapon
 
             if(useSize)
             {
-                stats.size = Mathf.Clamp(_player.projectileStats.size, 0, 2);
+                stats.size = Mathf.Clamp(_player.projectileStats.size, 0, 3); // [MODCONTENT] was capped at 2
             }
 
             if(useScaling)
@@ -63,6 +63,10 @@ public class ProjectileEnergyWeapon : PlayerEnergyWeapon
                 stats.homing = _player.projectileStats.homing;
                 stats.homingRadius = _player.projectileStats.homingRadius;
             }
+
+            // [MODCONTENT] full bolt-mod synergy: status, elements, pierce, bounce, fragment,
+            // explosive (already-explosive weapons get a bigger blast), phasing, growth.
+            WeaponSynergy.ApplyShotMods(stats, _player);
 
             if (useRateOfFire)
             {

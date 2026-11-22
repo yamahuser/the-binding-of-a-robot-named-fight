@@ -26,7 +26,7 @@ public class Phaserang : PlayerEnergyWeapon
         boomerang.gameObject.SetActive(false);
         boomerang.onReturn += () =>
         {
-            if (_player)
+            if (_player && boomerang.refundOnReturn) // [MODCONTENT] only the main boomerang refunds
             {
                 _player.PlayOneShot(returnSound);
                 _player.GainEnergy(minEnergy);
@@ -67,12 +67,30 @@ public class Phaserang : PlayerEnergyWeapon
     {
         if (_player.energy > minEnergy)
         {
-            var boomerang = GetBoomerang();
             if (_player.spinJumping) _player.spinJumping = false;
             _velocityFactor = Mathf.Clamp(_velocityFactor, 0.75f, 1);
-            boomerang.damagePerSecond = baseDamagePerSecond * _player.damageMultiplier;
-            boomerang.Shoot(_player.team, _player.transform, _player.GetAimingInfo(), _velocityFactor);
-            _player.energy -= minEnergy;
+
+            // [MODCONTENT] multishot = several boomerangs in a fan; size = boomerang size;
+            // shot speed = throw speed; rate of fire = DPS; bolt elements/statuses/procs; homing bends the throw.
+            var aim = _player.GetAimingInfo();
+            var count = 1 + WeaponSynergy.ExtraShots(_player);
+            var arc = WeaponSynergy.Arc(_player, 30f);
+            var rate = WeaponSynergy.FireRate(_player);
+            for (int i = 0; i < count; i++)
+            {
+                var boomerang = GetBoomerang();
+                boomerang.refundOnReturn = i == 0;
+                boomerang.damagePerSecond = baseDamagePerSecond * _player.damageMultiplier * rate;
+                boomerang.damageType = WeaponSynergy.MergeDamageType(boomerangPrefab.damageType, _player);
+                boomerang.statusEffects = WeaponSynergy.MergeStatusEffects(null, _player);
+                boomerang.onHit = WeaponSynergy.HitHandler(_player, 23 + i, rate);
+                boomerang.homing = _player.projectileStats.homing;
+                boomerang.transform.localScale = Vector3.one * Mathf.Clamp(WeaponSynergy.Size(_player), 1f, 2.5f);
+                var shotAim = aim;
+                shotAim.direction = WeaponSynergy.SpreadDirection(aim.direction, i, count, arc);
+                boomerang.Shoot(_player.team, _player.transform, shotAim, _velocityFactor * Mathf.Sqrt(WeaponSynergy.ShotSpeed(_player)));
+            }
+            _player.energy -= WeaponSynergy.EnergyCost(_player, minEnergy);
             _player.StartCoroutine(Attack());
             _player.PlayOneShot(shootSound);
             _velocityFactor = 0.55f;

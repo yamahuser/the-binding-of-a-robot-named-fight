@@ -105,6 +105,13 @@ public class Enemy : Damageable, ISpawnable, IPausable, IHasTeam
     {
         base.EndDeath();
 
+        // [MODCONTENT] Scrapper salvages scrap from kills
+        var salvage = CharacterRoster.Current.salvageChance;
+        if (salvage > 0 && !selfDestruct && team == Team.Enemy && PickUpManager.instance && Random.value < salvage)
+        {
+            PickUpManager.instance.SpawnPickUp(DropType.GrayScrap, position);
+        }
+
         var slot = SaveGameManager.activeSlot;
         var game = SaveGameManager.activeGame;
         if (slot != null && slot.totalKills < long.MaxValue && (game == null || game.allowAchievements))

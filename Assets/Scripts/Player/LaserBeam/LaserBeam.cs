@@ -54,8 +54,13 @@ public class LaserBeam : PlayerEnergyWeapon
                 Vector3 shotDirection = (Quaternion.AngleAxis(angleMod * _player.fireArc / 2, Vector3.forward) * aimingInfo.direction).normalized;
                 laser.transform.position = origin;
                 laser.transform.rotation = Quaternion.FromToRotation(Vector3.right, shotDirection);
-                var damage = baseDamage * _player.damageMultiplier;
+                // [MODCONTENT] rate of fire raises beam DPS; shot speed extends reach
+                var damage = baseDamage * _player.damageMultiplier * WeaponSynergy.FireRate(_player);
                 laser.damage = damage;
+                var voltRange = CharacterRoster.Current.beamBaseRange;
+                laser.range = voltRange > 0
+                    ? voltRange * Mathf.Clamp(WeaponSynergy.Size(_player), 1f, 4f)   // Volt: short beam, size extends it
+                    : 24f * WeaponSynergy.ShotSpeed(_player);
                 _player.DamageLatchers(damage, DamageType.Generic);
                 i++;
             }
@@ -63,7 +68,7 @@ public class LaserBeam : PlayerEnergyWeapon
 
         if (_lasers.Any((l)=> l.gameObject.activeInHierarchy))
         {
-            _energyTime = 1f / energyPerSecond;
+            _energyTime = 1f / (energyPerSecond * WeaponSynergy.CostMultiplier(_player)); // [MODCONTENT] synergy load
             _energyTimer += Time.deltaTime;
             if (_energyTimer > _energyTime)
             {
@@ -93,7 +98,7 @@ public class LaserBeam : PlayerEnergyWeapon
 
         var shots = _player.arcShots > 1 ? _player.arcShots : 1;
 
-        var bigLaser = _player.projectileStats.size > 2;
+        var bigLaser = _player.projectileStats.size > 1.5f; // [MODCONTENT] was > 2
         LaserType type;
         DamageType damageType;
         List<StatusEffect> statusEffects;
@@ -122,8 +127,10 @@ public class LaserBeam : PlayerEnergyWeapon
             laser.transform.parent = _player.transform;
             laser.transform.localPosition = Vector3.zero;
             laser.team = _player.team;
-            laser.damageType = damageType;
-            laser.statusEffects = statusEffects;
+            // [MODCONTENT] beam carries every bolt element/status and procs explosive/fragment on targets
+            laser.damageType = WeaponSynergy.MergeDamageType(damageType, _player);
+            laser.statusEffects = WeaponSynergy.MergeStatusEffects(statusEffects, _player);
+            laser.onHit = WeaponSynergy.HitHandler(_player, 205, WeaponSynergy.FireRate(_player));
             laser.stopTime = 0.25f;
             laser.damageOnStop = false;
             laser.ignoreDoors = false;
@@ -174,7 +181,7 @@ public class LaserBeam : PlayerEnergyWeapon
 
     private void StopAndClearLasers()
     {
-        foreach (var laser in _lasers) { if (laser) { laser.Stop(); } }
+        foreach (var laser in _lasers) { if (laser) { laser.onHit = null; laser.Stop(); } }
         _lasers.Clear();
     }
 

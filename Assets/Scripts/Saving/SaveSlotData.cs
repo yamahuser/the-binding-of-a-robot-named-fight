@@ -40,6 +40,8 @@ public class SaveSlotData
     public bool lookControls = true;
     [JsonProperty(PropertyName = "shtchrg")]
     public bool shotCharging = true;
+    [JsonProperty(PropertyName = "samusSprite")]
+    public bool samusSpriteEnabled;
 
     //Stats
     [JsonProperty(PropertyName = "deathS")]

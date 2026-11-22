@@ -131,9 +131,17 @@ public class NewGameScreenState : ScreenState
 
     public void StartNewGame()
     {
-        Debug.Log("New Game on Slot: " + SaveGameManager.instance.selectedSaveSlot);
+        // [MODCONTENT] pick a character before the run is created
+        ready = false;
+        CharacterSelect.Open(c => BeginNewGame(c.id), () => { ready = true; });
+    }
+
+    private void BeginNewGame(string characterId)
+    {
+        Debug.Log("New Game on Slot: " + SaveGameManager.instance.selectedSaveSlot + " as " + characterId);
         InputHelper.instance.AssignPlayer1LastActiveController();
         SaveGameManager.instance.NewGame(GameMode.Normal);
+        SaveGameManager.activeGame.character = characterId; // [MODCONTENT]
         SaveGameManager.instance.Save(false, true);
         SceneManager.LoadScene("NewGame");
     }

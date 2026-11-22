@@ -19,4 +19,6 @@ public class LaserStats
     public int sortingOrder;
     public float range = 24;
     public LaserStopType stopType = LaserStopType.Shrink;
+    // [MODCONTENT] player weapon on-hit hook (kill procs, explosive/fragment procs)
+    [NonSerialized] public Action<IDamageable> onHit;
 }

@@ -83,7 +83,7 @@ MonoBehaviour:
   shootSound: {fileID: 8300000, guid: 0ada5647df3643c408cc6639f7e3add0, type: 3}
   baseDamage: 5
   useDamageMultiplier: 1
-  useShotSpeedMultiplier: 0
+  useShotSpeedMultiplier: 1
   useRateOfFire: 1
   useHoming: 0
   useSize: 1

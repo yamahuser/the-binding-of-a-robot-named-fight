@@ -22,6 +22,8 @@ public class LineLaser : MonoBehaviour, IHasTeam, ILaser
     [Header("Stat Managed")]
     public float damagePerSecond;
     public DamageType damageType;
+    public List<StatusEffect> statusEffects; // [MODCONTENT]
+    public System.Action<IDamageable> onHit; // [MODCONTENT]
     public LayerMask collisionLayerMask;
     public float range = 24f;
     public float width = 0.75f;
@@ -169,7 +171,12 @@ public class LineLaser : MonoBehaviour, IHasTeam, ILaser
                     if (damagable != null && (hasTeam == null || hasTeam.team != team) && !_hasHit.Contains(damagable))
                     {
                         _hasHit.Add(damagable);
-                        damagable.Hurt(rDamage * Time.deltaTime, gameObject, damageType, true);
+                        if (damagable.Hurt(rDamage * Time.deltaTime, gameObject, damageType, true))
+                        {
+                            // [MODCONTENT]
+                            if (statusEffects != null && statusEffects.Count > 0) { damagable.ApplyStatusEffects(statusEffects, team); }
+                            if (onHit != null) { onHit(damagable); }
+                        }
                     }
                 }
             }
@@ -186,6 +193,8 @@ public class LineLaser : MonoBehaviour, IHasTeam, ILaser
         collisionLayerMask = stats.layerMask;
         damageType = stats.damageType;
         damagePerSecond = stats.damage;
+        statusEffects = stats.statusEffects; // [MODCONTENT]
+        onHit = stats.onHit; // [MODCONTENT]
         _lineRenderer.sortingLayerID = SortingLayer.NameToID(stats.sortingLayerName);
         blast.sortingLayerID = SortingLayer.NameToID(stats.sortingLayerName);
         sortingOrder = stats.sortingOrder;

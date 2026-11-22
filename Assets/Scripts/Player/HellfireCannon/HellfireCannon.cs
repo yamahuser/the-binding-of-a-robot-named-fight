@@ -55,7 +55,7 @@ public class HellfireCannon : PlayerEnergyWeapon
                 Stop();
             }
 
-            _energyTime = 1 / _energyPerSecond;
+            _energyTime = 1 / (_energyPerSecond * WeaponSynergy.CostMultiplier(_player)); // [MODCONTENT] synergy load
             _energyTimer += Time.deltaTime;
             if (_energyTimer > _energyTime)
             {
@@ -78,7 +78,7 @@ public class HellfireCannon : PlayerEnergyWeapon
                     _shotDelay = _minShotDelay;
                 }
 
-                _shotTimer = _shotDelay;
+                _shotTimer = _shotDelay / WeaponSynergy.FireRate(_player); // [MODCONTENT] rate of fire speeds the barrage
                 var max = _maxShotDelay - _minShotDelay;
                 var t = _maxShotDelay - _shotDelay;
                 var charge = t / max;
@@ -116,7 +116,9 @@ public class HellfireCannon : PlayerEnergyWeapon
             stats.canOpenDoors = true;
             stats.homing = _player.projectileStats.homing;
             stats.homingRadius = _player.projectileStats.homingRadius;
-            stats.size = _player.projectileStats.size > 1 ? 3 : 2;
+            stats.size = Mathf.Clamp(2f * WeaponSynergy.Size(_player), 2f, 4f); // [MODCONTENT] scales smoothly
+            // [MODCONTENT] fireballs take bolt mods; fragment is skipped (they already burst on impact).
+            WeaponSynergy.ApplyShotMods(stats, _player, WeaponSynergy.Mods.All & ~WeaponSynergy.Mods.Fragment);
             stats.spawnOnHit = spawnOnDeath;
             stats.spawnAtContact = true;
 

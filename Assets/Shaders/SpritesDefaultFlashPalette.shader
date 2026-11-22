@@ -4,6 +4,7 @@
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 		_Palette("Palette", 2D) = "white" {}
+		[PerRendererData] _DirectSpriteColor("Direct Sprite Color", Float) = 0
 		_Color("Tint", Color) = (1,1,1,1)
 		_FlashColor("Flash Color", Color) = (1,1,1,1)
 		_FlashAmount("Flash Amount",Range(0.0,1.0)) = 0.0
@@ -56,12 +57,13 @@
 			float _FlashAmount;
 			sampler2D _MainTex;
 			sampler2D _Palette;
+			float _DirectSpriteColor;
 			
 			fixed4 GetPaletteColor(float2 uv)
 			{
 				fixed4 source = tex2D(_MainTex, uv);
 
-				if (source.a == 0)
+				if (_DirectSpriteColor > 0.5 || source.a == 0)
 				{
 					return source;
 				}

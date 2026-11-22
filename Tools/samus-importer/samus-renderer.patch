@@ -1,0 +1,405 @@
+diff --git a/Assets/Prefabs/UI/OtherOptionsScreen.prefab b/Assets/Prefabs/UI/OtherOptionsScreen.prefab
+index 7389d9e..6b1eda1 100644
+--- a/Assets/Prefabs/UI/OtherOptionsScreen.prefab
++++ b/Assets/Prefabs/UI/OtherOptionsScreen.prefab
+@@ -166,6 +166,7 @@ RectTransform:
+   - {fileID: 224115119051440052}
+   - {fileID: 224466513952805548}
+   - {fileID: 224008733710847162}
++  - {fileID: 224008733710847163}
+   m_Father: {fileID: 224399046876943166}
+   m_RootOrder: 0
+   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+@@ -347,6 +348,139 @@ MonoBehaviour:
+           m_StringArgument: 
+           m_BoolArgument: 0
+         m_CallState: 2
++--- !u!1 &1374216862473519
++GameObject:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  serializedVersion: 6
++  m_Component:
++  - component: {fileID: 224008733710847163}
++  - component: {fileID: 222325027439493243}
++  - component: {fileID: 114310713111168389}
++  - component: {fileID: 114085229077052709}
++  m_Layer: 5
++  m_Name: SamusSprite
++  m_TagString: Untagged
++  m_Icon: {fileID: 0}
++  m_NavMeshLayer: 0
++  m_StaticEditorFlags: 0
++  m_IsActive: 1
++--- !u!224 &224008733710847163
++RectTransform:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1374216862473519}
++  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
++  m_LocalPosition: {x: 0, y: 0, z: 0}
++  m_LocalScale: {x: 1.0000644, y: 1.0000644, z: 1.0000644}
++  m_Children: []
++  m_Father: {fileID: 224514228285182738}
++  m_RootOrder: 4
++  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
++  m_AnchorMin: {x: 0, y: 0}
++  m_AnchorMax: {x: 0, y: 0}
++  m_AnchoredPosition: {x: 0, y: 0.0000052452087}
++  m_SizeDelta: {x: 0, y: 0}
++  m_Pivot: {x: 0.5, y: 0.5}
++--- !u!222 &222325027439493243
++CanvasRenderer:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1374216862473519}
++  m_CullTransparentMesh: 0
++--- !u!114 &114310713111168389
++MonoBehaviour:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1374216862473519}
++  m_Enabled: 1
++  m_EditorHideFlags: 0
++  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
++  m_Name:
++  m_EditorClassIdentifier:
++  m_Material: {fileID: 0}
++  m_Color: {r: 1, g: 1, b: 1, a: 1}
++  m_RaycastTarget: 1
++  m_Maskable: 1
++  m_OnCullStateChanged:
++    m_PersistentCalls:
++      m_Calls: []
++  m_FontData:
++    m_Font: {fileID: 12800000, guid: 623630ea8f14f74418524aff06ffcdbe, type: 2}
++    m_FontSize: 32
++    m_FontStyle: 0
++    m_BestFit: 0
++    m_MinSize: 10
++    m_MaxSize: 40
++    m_Alignment: 4
++    m_AlignByGeometry: 0
++    m_RichText: 1
++    m_HorizontalOverflow: 0
++    m_VerticalOverflow: 0
++    m_LineSpacing: 1
++  m_Text: Samus Sprite - Off
++--- !u!114 &114085229077052709
++MonoBehaviour:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1374216862473519}
++  m_Enabled: 1
++  m_EditorHideFlags: 0
++  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
++  m_Name:
++  m_EditorClassIdentifier:
++  m_Navigation:
++    m_Mode: 3
++    m_SelectOnUp: {fileID: 0}
++    m_SelectOnDown: {fileID: 0}
++    m_SelectOnLeft: {fileID: 0}
++    m_SelectOnRight: {fileID: 0}
++  m_Transition: 1
++  m_Colors:
++    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
++    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
++    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
++    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
++    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
++    m_ColorMultiplier: 1
++    m_FadeDuration: 0.1
++  m_SpriteState:
++    m_HighlightedSprite: {fileID: 0}
++    m_PressedSprite: {fileID: 0}
++    m_SelectedSprite: {fileID: 0}
++    m_DisabledSprite: {fileID: 0}
++  m_AnimationTriggers:
++    m_NormalTrigger: Normal
++    m_HighlightedTrigger: Highlighted
++    m_PressedTrigger: Pressed
++    m_SelectedTrigger: Highlighted
++    m_DisabledTrigger: Disabled
++  m_Interactable: 1
++  m_TargetGraphic: {fileID: 114310713111168389}
++  m_OnClick:
++    m_PersistentCalls:
++      m_Calls:
++      - m_Target: {fileID: 114450020888873592}
++        m_MethodName: ToggleSamusSprite
++        m_Mode: 1
++        m_Arguments:
++          m_ObjectArgument: {fileID: 0}
++          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
++          m_IntArgument: 0
++          m_FloatArgument: 0
++          m_StringArgument:
++          m_BoolArgument: 0
++        m_CallState: 2
+ --- !u!1 &1595304463089720
+ GameObject:
+   m_ObjectHideFlags: 0
+@@ -549,6 +683,7 @@ MonoBehaviour:
+   flashingLights: {fileID: 114672982589602700}
+   blood: {fileID: 114849620818966528}
+   shotCharging: {fileID: 114310713111168388}
++  samusSprite: {fileID: 114310713111168389}
+   menuOptions: {fileID: 114707959067543812}
+ --- !u!1 &1936460305905198
+ GameObject:
+diff --git a/Assets/Scripts/Player/PlayerSpriteMaker.cs b/Assets/Scripts/Player/PlayerSpriteMaker.cs
+index 4dfcb1f..ded0c38 100644
+--- a/Assets/Scripts/Player/PlayerSpriteMaker.cs
++++ b/Assets/Scripts/Player/PlayerSpriteMaker.cs
+@@ -29,6 +29,13 @@ public class PlayerSpriteMaker : MonoBehaviour
+     private static Texture2D _baseTorso;
+     private static Texture2D _baseHead;
+     private static Texture2D _baseLegs;
++    private static bool _samusAtlasChecked;
++    private static Dictionary<string, Sprite> _samusSprites;
++    private static readonly int DirectSpriteColor = Shader.PropertyToID("_DirectSpriteColor");
++    private MaterialPropertyBlock _samusProperties;
++    private bool _usingSamusSprite;
++    private Sprite _spriteBeforeSamus;
++    private Sprite _lastSamusSprite;
+ 
+     public void Awake()
+     {
+@@ -37,6 +44,43 @@ public void Awake()
+         if (_baseTorso == null) { _baseTorso = Resources.Load<Texture2D>("PlayerParts/BaseTorso"); }
+         if (_baseHead == null) { _baseHead = Resources.Load<Texture2D>("PlayerParts/BaseHead"); }
+         if (_baseLegs == null) { _baseLegs = Resources.Load<Texture2D>("PlayerParts/BaseLegs"); }
++        if (!_samusAtlasChecked && _player && _player.GetType() == typeof(Player))
++        {
++            _samusAtlasChecked = true;
++            _samusSprites = new Dictionary<string, Sprite>();
++            LoadReplacementSprites("Samus/PlayerAtlas", "PlayerBase_", 20, 10);
++            LoadReplacementSprites("Samus/SpiderAtlas", "SpiderForm_", 11, 2);
++        }
++    }
++
++    private static void LoadReplacementSprites(string resource, string spritePrefix, int columns, int rows)
++    {
++        const int size = 48;
++        var atlas = Resources.Load<Texture2D>(resource);
++        if (!atlas || atlas.width != columns * size || atlas.height != rows * size || !atlas.isReadable) { return; }
++
++        var pixels = atlas.GetPixels32();
++        for (int index = 0; index < columns * rows; index++)
++        {
++            int x = (index % columns) * size;
++            int y = (rows - 1 - index / columns) * size;
++            bool populated = false;
++            for (int row = 0; row < size && !populated; row++)
++            {
++                int firstPixel = (y + row) * atlas.width + x;
++                for (int column = 0; column < size; column++)
++                {
++                    if (pixels[firstPixel + column].a == 0) { continue; }
++                    populated = true;
++                    break;
++                }
++            }
++            if (!populated) { continue; }
++            string name = spritePrefix + index;
++            var sprite = Sprite.Create(atlas, new Rect(x, y, size, size), new Vector2(0.5f, 0.5f), 16, 0, SpriteMeshType.FullRect);
++            sprite.name = name;
++            _samusSprites.Add(name, sprite);
++        }
+     }
+ 
+     public void ClearItems()
+@@ -224,18 +268,47 @@ public void Update()
+ 
+     public void LateUpdate()
+     {
+-        if (_player)
++        if (_player && _player.mainRenderer && _player.mainRenderer.sprite)
+         {
++            var renderer = _player.mainRenderer;
++            var source = renderer.sprite == _lastSamusSprite ? _spriteBeforeSamus : renderer.sprite;
++            if (!source) { return; }
++            var frame = source.name;
+             Sprite sprite;
++            var slot = SaveGameManager.activeSlot;
++            if (slot != null && slot.samusSpriteEnabled && _samusSprites != null &&
++                _player.GetType() == typeof(Player) && _samusSprites.TryGetValue(frame, out sprite))
++            {
++                SetSamusColor(renderer, true);
++                _spriteBeforeSamus = source;
++                _lastSamusSprite = sprite;
++                renderer.sprite = sprite;
++                return;
++            }
++
++            SetSamusColor(renderer, false);
++            if (renderer.sprite == _lastSamusSprite) { renderer.sprite = source; }
++            _lastSamusSprite = null;
++            _spriteBeforeSamus = null;
+             Dictionary<string, Sprite> currentSprites;
+             var item = _player.selectedEnergyWeapon == null ? 0 : _player.selectedEnergyWeapon.item;
+-            if (itemSprites.TryGetValue(item, out currentSprites) && currentSprites.TryGetValue(_player.mainRenderer.sprite.name, out sprite))
++            if (itemSprites.TryGetValue(item, out currentSprites) && currentSprites.TryGetValue(frame, out sprite))
+             {
+-                _player.mainRenderer.sprite = sprite;
++                renderer.sprite = sprite;
+             }
+         }
+     }
+ 
++    private void SetSamusColor(SpriteRenderer renderer, bool enabled)
++    {
++        if (enabled == _usingSamusSprite) { return; }
++        if (_samusProperties == null) { _samusProperties = new MaterialPropertyBlock(); }
++        renderer.GetPropertyBlock(_samusProperties);
++        _samusProperties.SetFloat(DirectSpriteColor, enabled ? 1f : 0f);
++        renderer.SetPropertyBlock(_samusProperties);
++        _usingSamusSprite = enabled;
++    }
++
+     public void SaveTexture(Texture2D texture)
+     {
+ #if !UNITY_SWITCH
+diff --git a/Assets/Scripts/Saving/SaveSlotData.cs b/Assets/Scripts/Saving/SaveSlotData.cs
+index a94e9f5..438e049 100644
+--- a/Assets/Scripts/Saving/SaveSlotData.cs
++++ b/Assets/Scripts/Saving/SaveSlotData.cs
+@@ -40,6 +40,8 @@ public SaveSlotData()
+     public bool lookControls = true;
+     [JsonProperty(PropertyName = "shtchrg")]
+     public bool shotCharging = true;
++    [JsonProperty(PropertyName = "samusSprite")]
++    public bool samusSpriteEnabled;
+ 
+     //Stats
+     [JsonProperty(PropertyName = "deathS")]
+diff --git a/Assets/Scripts/UI/OtherOptionsScreen.cs b/Assets/Scripts/UI/OtherOptionsScreen.cs
+index 7b5c8af..6144422 100644
+--- a/Assets/Scripts/UI/OtherOptionsScreen.cs
++++ b/Assets/Scripts/UI/OtherOptionsScreen.cs
+@@ -10,6 +10,7 @@ public class OtherOptionsScreen : ScreenState
+     public Text flashingLights;
+     public Text blood;
+     public Text shotCharging;
++    public Text samusSprite;
+     public MenuOptions menuOptions;
+     private bool _saveOnExit;
+ 
+@@ -30,6 +31,7 @@ public override void OnEnable()
+                 flashingLights.text = "Flashing Lights - " + (slot.flashingLights ? "On" : "Off");
+                 blood.text = "Blood - " + (slot.blood ? "High" : "Low");
+                 shotCharging.text = "Shot Charging - " + (slot.shotCharging ? "Enabled" : "Disabled");
++                UpdateSamusSpriteText(slot);
+             }
+         }
+     }
+@@ -54,6 +56,10 @@ public override void ReadyUpdate()
+             {
+                 ToggleShotCharging();
+             }
++            else if (samusSprite && menuOptions.selectedMenuOption.gameObject == samusSprite.gameObject)
++            {
++                ToggleSamusSprite();
++            }
+         }
+ 
+         if (_controller.GetButtonDown("UICancel"))
+@@ -128,4 +134,19 @@ public void ToggleShotCharging()
+             }
+         }
+     }
++
++    public void ToggleSamusSprite()
++    {
++        var slot = SaveGameManager.activeSlot;
++        if (slot == null) { return; }
++        slot.samusSpriteEnabled = !slot.samusSpriteEnabled;
++        UpdateSamusSpriteText(slot);
++        SaveGameManager.instance.Save(false, true);
++        UISounds.instance.OptionChange();
++    }
++
++    private void UpdateSamusSpriteText(SaveSlotData slot)
++    {
++        if (samusSprite) { samusSprite.text = "Samus Sprite - " + (slot.samusSpriteEnabled ? "On" : "Off"); }
++    }
+ }
+diff --git a/Assets/Shaders/SpritesDefaultFlashMaskPalette.shader b/Assets/Shaders/SpritesDefaultFlashMaskPalette.shader
+index 56cac3b..9a455c5 100644
+--- a/Assets/Shaders/SpritesDefaultFlashMaskPalette.shader
++++ b/Assets/Shaders/SpritesDefaultFlashMaskPalette.shader
+@@ -6,6 +6,7 @@ Shader "Sprites/DefaultFlashMaskPalette"
+ 	{
+ 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+ 		_Palette("Palette", 2D) = "white" {}
++		[PerRendererData] _DirectSpriteColor("Direct Sprite Color", Float) = 0
+ 		_Color("Tint", Color) = (1,1,1,1)
+ 		_FlashColor("Flash Color", Color) = (1,1,1,1)
+ 		_FlashAmount("Flash Amount",Range(0.0,1.0)) = 0.0
+@@ -65,12 +66,13 @@ Shader "Sprites/DefaultFlashMaskPalette"
+ 			float _FlashAmount;
+ 			sampler2D _MainTex;
+ 			sampler2D _Palette;
++			float _DirectSpriteColor;
+ 			
+ 			fixed4 GetPaletteColor(float2 uv)
+ 			{
+ 				fixed4 source = tex2D(_MainTex, uv);
+ 
+-				if (source.a == 0)
++				if (_DirectSpriteColor > 0.5 || source.a == 0)
+ 				{
+ 					return source;
+ 				}
+@@ -119,4 +121,4 @@ Shader "Sprites/DefaultFlashMaskPalette"
+ 	}
+ 
+ 	Fallback "Sprites/DefaultFlash"
+-}
+\ No newline at end of file
++}
+diff --git a/Assets/Shaders/SpritesDefaultFlashPalette.shader b/Assets/Shaders/SpritesDefaultFlashPalette.shader
+index 9f62c0a..e0f2a16 100644
+--- a/Assets/Shaders/SpritesDefaultFlashPalette.shader
++++ b/Assets/Shaders/SpritesDefaultFlashPalette.shader
+@@ -4,6 +4,7 @@
+ 	{
+ 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+ 		_Palette("Palette", 2D) = "white" {}
++		[PerRendererData] _DirectSpriteColor("Direct Sprite Color", Float) = 0
+ 		_Color("Tint", Color) = (1,1,1,1)
+ 		_FlashColor("Flash Color", Color) = (1,1,1,1)
+ 		_FlashAmount("Flash Amount",Range(0.0,1.0)) = 0.0
+@@ -56,12 +57,13 @@
+ 			float _FlashAmount;
+ 			sampler2D _MainTex;
+ 			sampler2D _Palette;
++			float _DirectSpriteColor;
+ 			
+ 			fixed4 GetPaletteColor(float2 uv)
+ 			{
+ 				fixed4 source = tex2D(_MainTex, uv);
+ 
+-				if (source.a == 0)
++				if (_DirectSpriteColor > 0.5 || source.a == 0)
+ 				{
+ 					return source;
+ 				}
+@@ -108,4 +110,4 @@
+ 	}
+ 
+ 	Fallback "Sprites/DefaultFlash"
+-}
+\ No newline at end of file
++}

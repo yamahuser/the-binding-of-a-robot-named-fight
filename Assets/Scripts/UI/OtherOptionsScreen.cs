@@ -10,6 +10,7 @@ public class OtherOptionsScreen : ScreenState
     public Text flashingLights;
     public Text blood;
     public Text shotCharging;
+    public Text samusSprite;
     public MenuOptions menuOptions;
     private bool _saveOnExit;
 
@@ -30,6 +31,7 @@ public class OtherOptionsScreen : ScreenState
                 flashingLights.text = "Flashing Lights - " + (slot.flashingLights ? "On" : "Off");
                 blood.text = "Blood - " + (slot.blood ? "High" : "Low");
                 shotCharging.text = "Shot Charging - " + (slot.shotCharging ? "Enabled" : "Disabled");
+                UpdateSamusSpriteText(slot);
             }
         }
     }
@@ -53,6 +55,10 @@ public class OtherOptionsScreen : ScreenState
             else if (shotCharging && menuOptions.selectedMenuOption.gameObject == shotCharging.gameObject)
             {
                 ToggleShotCharging();
+            }
+            else if (samusSprite && menuOptions.selectedMenuOption.gameObject == samusSprite.gameObject)
+            {
+                ToggleSamusSprite();
             }
         }
 
@@ -127,5 +133,20 @@ public class OtherOptionsScreen : ScreenState
                 UISounds.instance.OptionChange();
             }
         }
+    }
+
+    public void ToggleSamusSprite()
+    {
+        var slot = SaveGameManager.activeSlot;
+        if (slot == null) { return; }
+        slot.samusSpriteEnabled = !slot.samusSpriteEnabled;
+        UpdateSamusSpriteText(slot);
+        SaveGameManager.instance.Save(false, true);
+        UISounds.instance.OptionChange();
+    }
+
+    private void UpdateSamusSpriteText(SaveSlotData slot)
+    {
+        if (samusSprite) { samusSprite.text = "Samus Sprite - " + (slot.samusSpriteEnabled ? "On" : "Off"); }
     }
 }

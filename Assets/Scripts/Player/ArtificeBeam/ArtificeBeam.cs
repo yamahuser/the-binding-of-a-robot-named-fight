@@ -55,7 +55,7 @@ public class ArtificeBeam : PlayerEnergyWeapon
 
         if (_lasers.Any((l) => l.gameObject.activeInHierarchy))
         {
-            _energyTime = 1f / scrapPerSecond;
+            _energyTime = 1f / (scrapPerSecond * WeaponSynergy.CostMultiplier(_player)); // [MODCONTENT] synergy load (scrap)
             _energyTimer += Time.deltaTime;
             if (_energyTimer > _energyTime)
             {
@@ -102,14 +102,18 @@ public class ArtificeBeam : PlayerEnergyWeapon
             stats.laserType = LaserType.BasicBeam;
             stats.layerMask = LayerMask.GetMask("Default");
             stats.ignoreDoors = false;
-            stats.damage = _player.projectileStats.damage * 4.5f + (scrapCount * 2.5f);
-            stats.damageType = DamageType.Generic;
+            stats.damage = (_player.projectileStats.damage * 4.5f + (scrapCount * 2.5f)) * WeaponSynergy.FireRate(_player); // [MODCONTENT]
+            // [MODCONTENT] elements, statuses and explosive/fragment procs from the bolt
+            stats.damageType = WeaponSynergy.MergeDamageType(DamageType.Generic, _player);
+            stats.statusEffects = WeaponSynergy.MergeStatusEffects(null, _player);
+            stats.onHit = WeaponSynergy.HitHandler(_player, 213 + i, WeaponSynergy.FireRate(_player));
+            stats.range = 24f * WeaponSynergy.ShotSpeed(_player);
             stats.team = _player.team;
             stats.stopTime = 0.15f;
             stats.stopType = LaserStopType.Shrink;
             stats.sortingLayerName = "AboveTiles";
             stats.sortingOrder = i * 2;
-            stats.width = Mathf.Lerp(0.25f, 1, scrapCount/8f);
+            stats.width = Mathf.Lerp(0.25f, 1, scrapCount/8f) * Mathf.Clamp(WeaponSynergy.Size(_player), 0.75f, 2.5f); // [MODCONTENT]
 
             var ilaser = LaserManager.instance.GetLaser(stats.laserType);
             var laser = ilaser as LineLaser;

@@ -29,6 +29,13 @@ public class PlayerSpriteMaker : MonoBehaviour
     private static Texture2D _baseTorso;
     private static Texture2D _baseHead;
     private static Texture2D _baseLegs;
+    private static bool _samusAtlasChecked;
+    private static Dictionary<string, Sprite> _samusSprites;
+    private static readonly int DirectSpriteColor = Shader.PropertyToID("_DirectSpriteColor");
+    private MaterialPropertyBlock _samusProperties;
+    private bool _usingSamusSprite;
+    private Sprite _spriteBeforeSamus;
+    private Sprite _lastSamusSprite;
 
     public void Awake()
     {
@@ -37,6 +44,43 @@ public class PlayerSpriteMaker : MonoBehaviour
         if (_baseTorso == null) { _baseTorso = Resources.Load<Texture2D>("PlayerParts/BaseTorso"); }
         if (_baseHead == null) { _baseHead = Resources.Load<Texture2D>("PlayerParts/BaseHead"); }
         if (_baseLegs == null) { _baseLegs = Resources.Load<Texture2D>("PlayerParts/BaseLegs"); }
+        if (!_samusAtlasChecked && _player && _player.GetType() == typeof(Player))
+        {
+            _samusAtlasChecked = true;
+            _samusSprites = new Dictionary<string, Sprite>();
+            LoadReplacementSprites("Samus/PlayerAtlas", "PlayerBase_", 20, 10);
+            LoadReplacementSprites("Samus/SpiderAtlas", "SpiderForm_", 11, 2);
+        }
+    }
+
+    private static void LoadReplacementSprites(string resource, string spritePrefix, int columns, int rows)
+    {
+        const int size = 48;
+        var atlas = Resources.Load<Texture2D>(resource);
+        if (!atlas || atlas.width != columns * size || atlas.height != rows * size || !atlas.isReadable) { return; }
+
+        var pixels = atlas.GetPixels32();
+        for (int index = 0; index < columns * rows; index++)
+        {
+            int x = (index % columns) * size;
+            int y = (rows - 1 - index / columns) * size;
+            bool populated = false;
+            for (int row = 0; row < size && !populated; row++)
+            {
+                int firstPixel = (y + row) * atlas.width + x;
+                for (int column = 0; column < size; column++)
+                {
+                    if (pixels[firstPixel + column].a == 0) { continue; }
+                    populated = true;
+                    break;
+                }
+            }
+            if (!populated) { continue; }
+            string name = spritePrefix + index;
+            var sprite = Sprite.Create(atlas, new Rect(x, y, size, size), new Vector2(0.5f, 0.5f), 16, 0, SpriteMeshType.FullRect);
+            sprite.name = name;
+            _samusSprites.Add(name, sprite);
+        }
     }
 
     public void ClearItems()
@@ -224,16 +268,45 @@ public class PlayerSpriteMaker : MonoBehaviour
 
     public void LateUpdate()
     {
-        if (_player)
+        if (_player && _player.mainRenderer && _player.mainRenderer.sprite)
         {
+            var renderer = _player.mainRenderer;
+            var source = renderer.sprite == _lastSamusSprite ? _spriteBeforeSamus : renderer.sprite;
+            if (!source) { return; }
+            var frame = source.name;
             Sprite sprite;
+            var slot = SaveGameManager.activeSlot;
+            if (slot != null && (slot.samusSpriteEnabled || CharacterRoster.ForcesSamusSprite) && _samusSprites != null && // [MODCONTENT]
+                _player.GetType() == typeof(Player) && _samusSprites.TryGetValue(frame, out sprite))
+            {
+                SetSamusColor(renderer, true);
+                _spriteBeforeSamus = source;
+                _lastSamusSprite = sprite;
+                renderer.sprite = sprite;
+                return;
+            }
+
+            SetSamusColor(renderer, false);
+            if (renderer.sprite == _lastSamusSprite) { renderer.sprite = source; }
+            _lastSamusSprite = null;
+            _spriteBeforeSamus = null;
             Dictionary<string, Sprite> currentSprites;
             var item = _player.selectedEnergyWeapon == null ? 0 : _player.selectedEnergyWeapon.item;
-            if (itemSprites.TryGetValue(item, out currentSprites) && currentSprites.TryGetValue(_player.mainRenderer.sprite.name, out sprite))
+            if (itemSprites.TryGetValue(item, out currentSprites) && currentSprites.TryGetValue(frame, out sprite))
             {
-                _player.mainRenderer.sprite = sprite;
+                renderer.sprite = sprite;
             }
         }
+    }
+
+    private void SetSamusColor(SpriteRenderer renderer, bool enabled)
+    {
+        if (enabled == _usingSamusSprite) { return; }
+        if (_samusProperties == null) { _samusProperties = new MaterialPropertyBlock(); }
+        renderer.GetPropertyBlock(_samusProperties);
+        _samusProperties.SetFloat(DirectSpriteColor, enabled ? 1f : 0f);
+        renderer.SetPropertyBlock(_samusProperties);
+        _usingSamusSprite = enabled;
     }
 
     public void SaveTexture(Texture2D texture)

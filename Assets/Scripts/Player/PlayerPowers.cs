@@ -33,6 +33,14 @@ public partial class Player
     public void BoltHelm(ProjectileStats stats, AimingInfo aimingInfo, int arcShots, float fireArc)
     {
         AudioManager.instance.PlayClipAtPoint(attackSound, helmPoint.position, 0.5f);
+        // [MODCONTENT] with an energy weapon equipped, helm bolts echo that weapon's flavor
+        if (_selectedEnergyWeapon != null) { stats = WeaponSynergy.HelmEcho(stats, this, _selectedEnergyWeapon.item); }
+        var brood = SwarmBrood.For(this);
+        if (brood)
+        {
+            ProjectileManager.instance.Shoot(stats, new AimingInfo(brood.Muzzle(aimingInfo.direction) + Vector3.up * 0.3f, aimingInfo.direction));
+            return;
+        }
         if (arcShots > 0)
         {
             ProjectileManager.instance.ArcShoot(stats, helmPoint.position, aimingInfo.direction, arcShots, fireArc);
